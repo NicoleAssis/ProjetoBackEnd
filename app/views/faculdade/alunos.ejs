@@ -14,12 +14,21 @@
 				<td>ID</td>
 				<td>Título</td>
 			</tr>
-			<% for(var i = 0; i < alunos.length; i++){ %>
+			
+			<% if (typeof alunos !== 'undefined' && alunos.length > 0) { %> 
+				<% for(var i = 0; i < alunos.length; i++){ %>
+					<tr>
+						<td><%= alunos[i].id %></td>
+						<td><%= alunos[i].nome %></td>
+					</tr>
+				<% } %>
+			<% } else { %>
 				<tr>
-					<td><%= alunos[i].id %></td>
-					<td><%= alunos[i].nome %></td>
+					<td colspan="2">Nenhum aluno encontrado.</td>
 				</tr>
 			<% } %>
+			
+			</table>
 
 		</table>
 
