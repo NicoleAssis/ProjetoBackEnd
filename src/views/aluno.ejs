@@ -1,0 +1,25 @@
+<%# 
+<div class="form-group">
+  <label>Curso</label>
+  <select class="form-control" name="curso_id" id="cursoSelect">
+    <option value="">Selecione um curso...</option>
+    <% if(cursos && cursos.length > 0) { %>
+      <% cursos.forEach(curso => { %>
+        <%
+          let selected = false;
+          if (aluno.curso_id === curso.id) selected = true;
+          if (aluno.curso && aluno.curso.id === curso.id) selected = true;
+        %>
+        <option value="<%= curso.id %>" <%= selected ? 'selected' : '' %>>
+          <%= curso.nome %> (<%= curso.codigo %>)
+        </option>
+      <% }); %>
+    <% } else { %>
+      <option value="" disabled>Nenhum curso cadastrado</option>
+    <% } %>
+  </select>
+  <small class="form-text text-muted">
+    Opcional. <a href="/curso" target="_blank">Clique aqui</a> para gerenciar cursos.
+  </small>
+</div>
+%>
