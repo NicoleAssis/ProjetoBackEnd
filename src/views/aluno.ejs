@@ -1,0 +1,110 @@
+<!-- src/views/aluno.ejs -->
+<%- include('includes/head') %>
+<%- include('includes/nav') %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2"></div>
+
+    <div class="col-lg-8 my-3">
+      <h1 class="text-center">
+        <% if(aluno && aluno.id) { %>
+          Editar Aluno
+        <% } else { %>
+          Cadastrar Novo Aluno
+        <% } %>
+      </h1>
+      
+      <p class="text-center lead">
+        <% if(aluno && aluno.id) { %>
+          Editando: <strong><%= aluno.nome %></strong>
+        <% } else { %>
+          Preencha os dados do aluno abaixo
+        <% } %>
+      </p>
+
+      <%- include('includes/messages') %>
+
+      <form action="<% if(aluno && aluno.id) { %>/aluno/edit/<%= aluno.id %><% } else { %>/aluno/register<% } %>" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        
+        <div class="form-group">
+          <label for="nome">Nome *</label>
+          <input type="text" class="form-control" id="nome" name="nome" 
+                 value="<%= aluno.nome || '' %>" required
+                 placeholder="Digite o nome do aluno">
+          <small class="form-text text-muted">Campo obrigatório</small>
+        </div>
+
+        <div class="form-group">
+          <label for="sobrenome">Sobrenome</label>
+          <input type="text" class="form-control" id="sobrenome" name="sobrenome" 
+                 value="<%= aluno.sobrenome || '' %>"
+                 placeholder="Digite o sobrenome do aluno">
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" class="form-control" id="email" name="email" 
+                 value="<%= aluno.email || '' %>"
+                 placeholder="exemplo@email.com">
+        </div>
+
+        <div class="form-group">
+          <label for="curso_id">Curso</label>
+          <select class="form-control" name="curso_id" id="curso_id">
+            <option value="">Selecione um curso...</option>
+            <% if(cursos && cursos.length > 0) { %>
+              <% cursos.forEach(curso => { %>
+                <%
+                  let selected = false;
+                  if (aluno.curso_id === curso.id) selected = true;
+                  if (aluno.curso && aluno.curso.id === curso.id) selected = true;
+                %>
+                <option value="<%= curso.id %>" <%= selected ? 'selected' : '' %>>
+                  <%= curso.nome %> (<%= curso.codigo %>)
+                </option>
+              <% }); %>
+            <% } else { %>
+              <option value="" disabled>Nenhum curso cadastrado</option>
+            <% } %>
+          </select>
+          <small class="form-text text-muted">
+            Opcional. <a href="/curso" target="_blank">Clique aqui</a> para gerenciar cursos.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <small class="form-text text-muted">
+            * Campos obrigatórios. Pelo menos um campo adicional (sobrenome, e-mail ou curso) deve ser preenchido.
+          </small>
+        </div>
+
+        <div class="form-group text-center mt-4">
+          <button type="submit" class="btn btn-success btn-lg">
+            <% if(aluno && aluno.id) { %>
+              <i class="fas fa-save"></i> Atualizar Aluno
+            <% } else { %>
+              <i class="fas fa-user-plus"></i> Cadastrar Aluno
+            <% } %>
+          </button>
+          
+          <a href="/aluno/index" class="btn btn-secondary btn-lg ml-2">
+            <i class="fas fa-arrow-left"></i> Voltar para Lista
+          </a>
+          
+          <% if(aluno && aluno.id) { %>
+            <a href="/aluno/delete/<%= aluno.id %>" class="btn btn-danger btn-lg ml-2"
+               onclick="return confirm('Tem certeza que deseja excluir este aluno?')">
+              <i class="fas fa-trash"></i> Excluir Aluno
+            </a>
+          <% } %>
+        </div>
+      </form>
+    </div>
+    
+    <div class="col-lg-2"></div>
+  </div>
+</div>
+
+<%- include('includes/footer') %>
